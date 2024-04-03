@@ -1,24 +1,28 @@
 from FlatIterator import FlatIterator
 from flatGenerator import flat_generator
+import types
 
-nested_list = [
+list_of_lists = [
 	['a', 'b', 'c'],
     2,
 	['d', 'e', 'f', 'h', False],
     'element',
 	[1, 2, None],
 ]
-# nested_list = {'1': 1}
+# list_of_lists = {'1': 1}
 
 def main_iterator():
     '''Проверка только на один уровень, список там или нет'''
 
     try:
-        for item in FlatIterator(nested_list):
-            print(item)
+        for flat_iterator_item, check_item in zip(
+            FlatIterator(list_of_lists),
+            ['a', 'b', 'c', 2, 'd', 'e', 'f', 'h', False, 'element', 1, 2, None]
+        ):
+            assert flat_iterator_item == check_item
+            print(flat_iterator_item)
 
-        flat_list = [item for item in FlatIterator(nested_list)]
-        print(flat_list)
+        assert list(FlatIterator(list_of_lists)) == ['a', 'b', 'c', 2, 'd', 'e', 'f', 'h', False, 'element', 1, 2, None]
 
     except Exception as error:
         print('Caught this error: ' + repr(error))
@@ -29,11 +33,16 @@ def main_generator():
 
     try:
 
-        for item in  flat_generator(nested_list):
-            print(item)
+        for flat_iterator_item, check_item in zip(
+            flat_generator(list_of_lists),
+            ['a', 'b', 'c', 2, 'd', 'e', 'f', 'h', False, 'element', 1, 2, None]
+        ):
+            assert flat_iterator_item == check_item
+            print(flat_iterator_item)
 
-        new_flat = [item for item in flat_generator(nested_list)]
-        print(new_flat)
+        assert list(flat_generator(list_of_lists)) == ['a', 'b', 'c', 2, 'd', 'e', 'f', 'h', False, 'element', 1, 2, None]
+
+        assert isinstance(flat_generator(list_of_lists), types.GeneratorType)
     
     except Exception as error:
         print('Caught this error: ' + repr(error))
